@@ -1,34 +1,27 @@
-from fastapi import FastAPI, HTTPException, File, UploadFile
-from pydantic import BaseModel, Field
-from typing import Optional
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import StreamingResponse
+import io
 from PIL import Image
+import rembg
 import qrcode
+import base64
 
 app = FastAPI()
-
-class Url(BaseModel):
-    url: str = Field(..., example="https://example.com")
-
-@app.post("/qrcode")
-async def generate_qr_code(url: Url):
+ 
+@app.get("/qrcode")
+async def generate_qr_code(url: str):
     try:
-        img = qrcode.make(url.url)
-        filename = "qrcode.png"
-        img.save("./" + filename)
-        return {"message": "QR code generated successfully!", "qrcode": filename}
+        url=url.strip()
+        if url == "":
+            return HTTPException(status_code=400, detail="Error! URL not provided.")
+        img = qrcode.make()
+        img_byte_array = io.BytesIO()
+        img.save(img_byte_array, format='PNG')
+        img_byte_array.seek(0)
+        return StreamingResponse(io.BytesIO(img_byte_array.getvalue()), media_type="image/png")
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal Server Error")
-    
-@app.post("/img2gray")
-async def img2gray(image: UploadFile = File(...)):
-    try:
-        img = Image.open(image)
-        img = img.convert("L")
-        filename = "gray_image.png"
-        img.save("./" + filename)
-        return {"message": "Image converted to grayscale successfully!", "gray_image": filename}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+
 
 if __name__ == "__main__":
     import uvicorn

@@ -1,0 +1,21 @@
+version: '3'
+services:
+  myapp:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:80
+    volumes:
+      - ./app:/app
+
+  nginx-proxy-manager:
+    image: jlesage/nginx-proxy-manager
+    ports:
+      - 81:81
+      - 443:443
+      - 4443:4443
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+      - ./nginx:/etc/nginx

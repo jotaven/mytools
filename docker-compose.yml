@@ -1,21 +1,31 @@
 version: '3'
 services:
-  myapp:
+  web:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./docker/app/Dockerfile
     ports:
-      - 8080:80
+      - 8000:8000
     volumes:
       - ./app:/app
 
-  nginx-proxy-manager:
-    image: jlesage/nginx-proxy-manager
+  api:
+    build:
+      context: .
+      dockerfile: ./docker/api/Dockerfile
     ports:
-      - 81:81
-      - 443:443
-      - 4443:4443
+      - 8001:8001
+    volumes:
+      - ./api:/api
+
+  nginx-proxy-manager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports: 
+      - '80:80'
+      - '443:443'
+      - '81:81'
+
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
-      - ./nginx:/etc/nginx

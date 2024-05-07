@@ -17,7 +17,7 @@ def qrcode(request):
         if 'url' not in request.POST:
             return render(request, 'mytools/qrcode.html', {'error': 'URL not provided!'})
         url = request.POST.get('url')
-        response = requests.get('http://127.0.0.1:8001/qrcode', params={'url': url})
+        response = requests.get('http://api:8001/qrcode', params={'url': url})
         if response.status_code == 200:
             imagem = base64.b64encode(response.content).decode('utf-8')
             return render(request, 'mytools/qrcode.html', {'imagem': imagem, 'url': url})

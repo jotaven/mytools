@@ -6,32 +6,33 @@ from PIL import Image
 import cv2
 import numpy as np
 import os
+import rembg
 
 TESSDATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data/tessdata')
 
 def index(request):
     return render(request, 'mytools/index.html')
 
-def qrcode(request):
+def generate_qrcode(request):
     if request.method == 'POST':
         if 'url' not in request.POST:
-            return render(request, 'mytools/qrcode.html', {'error': 'URL not provided!'})
+            return render(request, 'mytools/qrcode.html', {'error': 'URL não providenciada!'})
         url = request.POST.get('url')
         response = requests.get('http://api:8001/qrcode', params={'url': url})
         if response.status_code == 200:
             imagem = base64.b64encode(response.content).decode('utf-8')
             return render(request, 'mytools/qrcode.html', {'imagem': imagem, 'url': url})
         else:
-            return render(request, 'mytools/qrcode.html', {'error': 'Failed to generate QR code!'})
+            return render(request, 'mytools/qrcode.html', {'error': 'Falha ao gerar QrCode!'})
 
     return render(request, 'mytools/qrcode.html')
 
 def ocr(request):
-    print(request.FILES)
     if request.method == 'POST':
         if 'file_upload' not in request.FILES:
-            return render(request, 'mytools/ocr.html', {'error': 'Image not provided!'})
-        image = Image.open(request.FILES['file_upload'])
+            print(request.FILES)
+            return render(request, 'mytools/ocr.html', {'error': 'Imagem não providenciada!'})
+        image = cv2.imdecode(np.fromstring(request.FILES['file_upload'].read(), np.uint8), cv2.IMREAD_COLOR)
         image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2GRAY)
         resultado = pytesseract.image_to_data(image, lang="por", config=f"--tessdata-dir '{TESSDATA_DIR}'", output_type=pytesseract.Output.DICT)
         resultado = [resultado['text'][i] for i in range(len(resultado['text'])) if resultado['text'][i] != '' and resultado['conf'][i] > 45]
@@ -39,3 +40,38 @@ def ocr(request):
         return render(request, 'mytools/ocr.html', {'image_text': resultado})
 
     return render(request, 'mytools/ocr.html')
+
+def read_qrcode(request):
+    if request.method == 'POST':
+        if 'file_upload' not in request.FILES:
+            print(request.FILES)
+            return render(request, 'mytools/read_qrcode.html', {'error': 'Imagem não providenciada!'})
+        # check extension
+        extension = request.FILES['file_upload'].name.split('.')[-1]
+        if extension not in ['jpg', 'jpeg', 'png']:
+            return render(request, 'mytools/read_qrcode.html', {'error': f'Formato {extension} não suportado!'})
+        
+
+        image = cv2.imdecode(np.fromstring(request.FILES['file_upload'].read(), np.uint8), cv2.IMREAD_COLOR)
+        qrcdetector = cv2.QRCodeDetector()
+        retval, decoded_info, points, straight_qrcode =  qrcdetector.detectAndDecodeMulti(image)
+        if points is not None:
+            return render(request, 'mytools/read_qrcode.html', {'qrcode_texts': decoded_info})
+        
+        return render(request, 'mytools/read_qrcode.html', {'error': 'Nenhum QR Code encontrado!'})
+
+    return render(request, 'mytools/read_qrcode.html')
+
+        
+def removebg(request):
+    if request.method == "POST" and request.FILES['file_upload']:
+        image = request.FILES['file_upload']
+        response = requests.get('http://api:8001/removebg', files={'image': image})
+        if response.status_code == 200:
+            imagem = base64.b64encode(response.content).decode('utf-8')
+            return render(request, 'mytools/removebg.html', {'imagem': imagem})
+        else:
+            return render(request, 'mytools/removebg.html', {'error': 'Falha ao enviar imagem!'})
+
+
+    return render(request, 'mytools/removebg.html')

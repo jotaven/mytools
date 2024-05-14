@@ -1,17 +1,4 @@
-{% extends "base.html" %}
-{% block body %}
-<h2 class="text-4xl font-extrabold">Gere o seu QRCode</h2>
-<p class="my-4 text-lg text-gray-500">Informe a baixo o texto que você quer codificar para QRCode</p>
-<form action="" method="POST">
-    {% csrf_token %}
-    <input type="text" id="url" name="url" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-2/3 md:w-1/4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="exemplo.com.br" value="{{url}}" required />
-    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 mt-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Gerar QRCode</button>
-</form>
-{% if imagem %}
-<img src="data:image/png;base64,{{imagem}}" alt="">
-{% endif %}
-{% if error %}
-<p>{{error}}</p>
-{% endif %}
-</div>
-{% endblock body %}
+{% extends "mytools/base-text2img.html" %}
+
+{% block type %}Gerar QRCode{% endblock type %}
+{% block description %}Informe o texto a baixo que você quer codificar para QRCode{% endblock description %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 import base64
 import requests
 import pytesseract
@@ -15,13 +15,13 @@ def index(request):
 
 def generate_qrcode(request):
     if request.method == 'POST':
-        if 'url' not in request.POST:
+        if 'text' not in request.POST:
             return render(request, 'mytools/qrcode.html', {'error': 'URL não providenciada!'})
-        url = request.POST.get('url')
-        response = requests.get('http://api:8001/qrcode', params={'url': url})
+        text = request.POST.get('text')
+        response = requests.post('http://api:8001/qrcode', params={'url': text})
         if response.status_code == 200:
             imagem = base64.b64encode(response.content).decode('utf-8')
-            return render(request, 'mytools/qrcode.html', {'imagem': imagem, 'url': url})
+            return render(request, 'mytools/qrcode.html', {'imagem': imagem, 'text': text})
         else:
             return render(request, 'mytools/qrcode.html', {'error': 'Falha ao gerar QrCode!'})
 
@@ -46,7 +46,6 @@ def read_qrcode(request):
         if 'file_upload' not in request.FILES:
             print(request.FILES)
             return render(request, 'mytools/read_qrcode.html', {'error': 'Imagem não providenciada!'})
-        # check extension
         extension = request.FILES['file_upload'].name.split('.')[-1]
         if extension not in ['jpg', 'jpeg', 'png']:
             return render(request, 'mytools/read_qrcode.html', {'error': f'Formato {extension} não suportado!'})
@@ -66,7 +65,7 @@ def read_qrcode(request):
 def removebg(request):
     if request.method == "POST" and request.FILES['file_upload']:
         image = request.FILES['file_upload']
-        response = requests.get('http://api:8001/removebg', files={'image': image})
+        response = requests.post('http://api:8001/removebg', files={'image': image})
         if response.status_code == 200:
             imagem = base64.b64encode(response.content).decode('utf-8')
             return render(request, 'mytools/removebg.html', {'imagem': imagem})
@@ -75,3 +74,11 @@ def removebg(request):
 
 
     return render(request, 'mytools/removebg.html')
+
+def download_image(request):
+    if request.method == "POST" and 'imagem' in request.POST:
+        imagem = base64.b64decode(request.POST.get('imagem'))
+        response = HttpResponse(imagem, content_type='image/png')
+        response['Content-Disposition'] = 'attachment; filename="qrcode.png"'
+        return response
+

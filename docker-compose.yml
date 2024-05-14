@@ -1,6 +1,7 @@
 version: '3'
 services:
   web:
+    container_name: web_mytools
     build:
       context: .
       dockerfile: ./docker/app/Dockerfile
@@ -10,6 +11,7 @@ services:
       - ./app:/app
 
   api:
+    container_name: api_mytools
     build:
       context: .
       dockerfile: ./docker/api/Dockerfile
@@ -18,14 +20,14 @@ services:
     volumes:
       - ./api:/api
 
-  nginx-proxy-manager:
-    image: 'jc21/nginx-proxy-manager:latest'
+  nginx:
+    image: nginx:latest
+    container_name: nginx_mytools
     restart: unless-stopped
-    ports: 
-      - '80:80'
-      - '443:443'
-      - '81:81'
-
     volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+    command: sh -c "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -subj '/C=BR/ST=PB/L=Joao Pessoa/O=Jotinha/CN=localhost' && nginx -g 'daemon off;'"
+    ports:
+      - 80:80
+      - 443:443

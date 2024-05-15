@@ -27,7 +27,8 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/ssl:/etc/nginx/ssl
-    command: sh -c "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -subj '/C=BR/ST=PB/L=Joao Pessoa/O=Jotinha/CN=localhost' && nginx -g 'daemon off;'"
+      - ./app/static:/static
+    # command: sh -c "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -subj '/C=BR/ST=PB/L=Joao Pessoa/O=Jotinha/CN=localhost' && nginx -g 'daemon off;'"
     ports:
       - 80:80
       - 443:443

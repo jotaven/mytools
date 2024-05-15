@@ -65,13 +65,12 @@ def read_qrcode(request):
 def removebg(request):
     if request.method == "POST" and request.FILES['file_upload']:
         image = request.FILES['file_upload']
-        response = requests.post('http://api:8001/removebg', files={'image': image})
+        response = requests.get('http://api:8001/removebg', files={'image': image})
         if response.status_code == 200:
             imagem = base64.b64encode(response.content).decode('utf-8')
             return render(request, 'mytools/removebg.html', {'imagem': imagem})
         else:
             return render(request, 'mytools/removebg.html', {'error': 'Falha ao enviar imagem!'})
-
 
     return render(request, 'mytools/removebg.html')
 

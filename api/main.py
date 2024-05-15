@@ -30,7 +30,7 @@ async def generate_qr_code(url: str):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-@app.post("/removebg")
+@app.get("/removebg")
 async def remove_background(image: UploadFile):
     if image.content_type not in ["image/jpeg", "image/png"]:
         return HTTPException(status_code=400, detail="Error! Invalid file format.")

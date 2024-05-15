@@ -23,3 +23,15 @@ jobs:
         REMOTE_USER: "ec2-user"
         TARGET: "/home/ec2-user/mytools"
         EXCLUDE: "/dist/, /node_modules/, **.env, rebuild_app.sh, watcher.sh"
+    
+    - name: Restart Docker-compose
+      uses: appleboy/ssh-action@master
+      with:
+        host: "ec2-34-201-92-224.compute-1.amazonaws.com"
+        username: "ec2-user"
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd /home/ec2-user/mytools
+          docker-compose down
+          docker-compose up -d
+  

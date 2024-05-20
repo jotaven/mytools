@@ -2,11 +2,9 @@ from django.shortcuts import render, HttpResponse
 import base64
 import requests
 import pytesseract
-from PIL import Image
 import cv2
 import numpy as np
 import os
-import rembg
 
 TESSDATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data/tessdata')
 
@@ -70,7 +68,7 @@ def removebg(request):
             imagem = base64.b64encode(response.content).decode('utf-8')
             return render(request, 'mytools/removebg.html', {'imagem': imagem})
         else:
-            return render(request, 'mytools/removebg.html', {'error': 'Falha ao enviar imagem!'})
+            return render(request, 'mytools/removebg.html', {'error': f'Erro {response.status_code}. Tente novamente mais tarde!'})
 
     return render(request, 'mytools/removebg.html')
 

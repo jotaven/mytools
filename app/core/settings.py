@@ -25,9 +25,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-rklx#6(aj^b6gra!l(_&hw#)xmxwfd6$ckuymik1^$ky6d1j0='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['tools.jotinha.me', "localhost"]
+
+if not DEBUG:
+    ALLOWED_HOSTS = ['tools.jotinha.me']
+else:
+    ALLOWED_HOSTS = ['*']
+
 CSRF_TRUSTED_ORIGINS = ['https://*.jotinha.me','https://*.127.0.0.1', 'https://localhost']
 
 

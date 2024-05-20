@@ -1,22 +1,31 @@
-from fastapi import FastAPI, HTTPException, UploadFile
+from fastapi import FastAPI, HTTPException, Request, UploadFile
 from fastapi.responses import StreamingResponse
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 import io
 from PIL import Image
 import rembg
 import qrcode
 import numpy as np
 
+limiter = Limiter(key_func=get_remote_address)
 app = FastAPI(
     title="MyTools API",
     description="API para a aplicação MyTools",
     version="0.1",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
-    openapi_url="/api/openapi.json"
+    openapi_url="/api/openapi.json",
+    debug=True
 )
- 
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 @app.post("/qrcode")
-async def generate_qr_code(url: str):
+@limiter.limit("5/minute")
+async def generate_qr_code(request: Request, url: str):
     url=url.strip()
     if url == "":
         return HTTPException(status_code=400, detail="Error! URL not provided.")
@@ -31,13 +40,8 @@ async def generate_qr_code(url: str):
 
 
 @app.get("/removebg")
-async def remove_background(image: UploadFile):
-    if image.content_type not in ["image/jpeg", "image/png"]:
-        return HTTPException(status_code=400, detail="Error! Invalid file format.")
-    if image.content_length == 0:
-        return HTTPException(status_code=400, detail="Error! Empty file.")
-    if image.content_length is None:
-        return HTTPException(status_code=400, detail="Error! File not provided.")
+@limiter.limit("4/minute")
+async def remove_background(request: Request, image: UploadFile):
     try:
         image = Image.open(image.file)
         image = np.array(image)
@@ -54,7 +58,7 @@ async def remove_background(image: UploadFile):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=True)
 
 
 

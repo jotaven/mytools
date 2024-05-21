@@ -19,7 +19,7 @@ jobs:
         SSH_PRIVATE_KEY: ${{secrets.EC2_SSH_KEY}}
         ARGS: "-rltgoDzvO --delete"
         SOURCE: "./"
-        REMOTE_HOST: "ec2-34-201-92-224.compute-1.amazonaws.com"
+        REMOTE_HOST: "ec2-3-80-58-184.compute-1.amazonaws.com"
         REMOTE_USER: "ec2-user"
         TARGET: "/home/ec2-user/mytools"
         EXCLUDE: "/dist/, /node_modules/, **.env, rebuild_app.sh, watcher.sh"
@@ -27,7 +27,7 @@ jobs:
     - name: Restart Docker-compose
       uses: appleboy/ssh-action@master
       with:
-        host: "ec2-34-201-92-224.compute-1.amazonaws.com"
+        host: "ec2-3-80-58-184.compute-1.amazonaws.com"
         username: "ec2-user"
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |

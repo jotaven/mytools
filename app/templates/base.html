@@ -50,6 +50,8 @@
                     <span class="flex-1 ms-3 whitespace-nowrap">Ler QRCODE</span>
                 </a>
             </li>
+        </ul>
+        <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
             <li>
                 <a href="{% url "removebg" %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                     <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white" fill="none" viewBox="0 0 24 24" fill="currentColor"stroke="currentColor" strokeWidth={2}>
@@ -58,14 +60,31 @@
                     <span class="flex-1 ms-3 whitespace-nowrap">Remover Background</span>
                 </a>
             </li>
+            <li>
+               <a href="{% url "contour" %}" class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white" fill="none" viewBox="0 0 24 24" fill="currentColor"stroke="currentColor" strokeWidth={2}>
+                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l 4-8 3 6 2-4 3 6z" clip-rule="evenodd">
+                </svg>
+                <span class="ms-3">getContornos</span>
+               </a>
+            </li>
+            <li>
+               <a href="{% url "scketch" %}" class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white" fill="none" viewBox="0 0 24 24" fill="currentColor"stroke="currentColor" strokeWidth={2}>
+                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l 4-8 3 6 2-4 3 6z" clip-rule="evenodd">
+                </svg>
+                <span class="ms-3">getScketch</span>
+               </a>
+            </li>
         </ul>
         <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
             <li>
                <a href="/api/redoc/" class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-                  <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
-                     <path d="M16 14V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 0 0 0-2h-1v-2a2 2 0 0 0 2-2ZM4 2h2v12H4V2Zm8 16H3a1 1 0 0 1 0-2h9v2Z"/>
-                  </svg>
-                  <span class="ms-3">Documentação</span>
+                    <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
+                        <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+
+                    <span class="ms-3">Documentação da API</span>
                </a>
             </li>
             <li>

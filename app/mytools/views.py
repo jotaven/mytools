@@ -31,7 +31,7 @@ def generate_qrcode(request):
 
     return render(request, 'mytools/qrcode.html')
 
-def ocr(request):
+def image_ocr(request):
     if request.method == 'POST':
         if 'file_upload' not in request.FILES:
             print(request.FILES)
@@ -45,7 +45,7 @@ def ocr(request):
 
     return render(request, 'mytools/ocr.html')
 
-def read_qrcode(request):
+def image_read_qrcode(request):
     if request.method == 'POST':
         if 'file_upload' not in request.FILES:
             print(request.FILES)
@@ -66,7 +66,7 @@ def read_qrcode(request):
     return render(request, 'mytools/read_qrcode.html')
 
         
-def removebg(request):
+def image_removebg(request):
     if request.method == "POST" and request.FILES['file_upload']:
         image = request.FILES['file_upload']
         response = requests.get(f'{API_URL}/removebg', files={'image': image})
@@ -77,6 +77,32 @@ def removebg(request):
             return render(request, 'mytools/removebg.html', {'error': f'Erro {response.status_code}. Tente novamente mais tarde!'})
 
     return render(request, 'mytools/removebg.html')
+
+def image_contour(request):
+    if request.method == "POST" and request.FILES['file_upload']:
+        image = request.FILES['file_upload']
+        image = cv2.imdecode(np.fromstring(image.read(), np.uint8), cv2.IMREAD_COLOR)
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        edged = cv2.Canny(gray, 30, 150)
+        contours, _ = cv2.findContours(edged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        blank_image = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
+        image = cv2.drawContours(blank_image, contours, -1, (0, 255, 0), 3)
+        _, img_encoded = cv2.imencode('.png', image)
+        img_encoded = base64.b64encode(img_encoded).decode('utf-8')
+        return render(request, 'mytools/contour.html', {'imagem': img_encoded})
+    return render(request, 'mytools/contour.html')
+
+def image_scketch(request):
+    if request.method == "POST" and request.FILES['file_upload']:
+        image = request.FILES['file_upload']
+        image = cv2.imdecode(np.fromstring(image.read(), np.uint8), cv2.IMREAD_COLOR)
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        gray_blur = cv2.GaussianBlur(gray, (21, 21), 0)
+        image = cv2.divide(gray, gray_blur, scale=256)
+        _, img_encoded = cv2.imencode('.png', image)
+        img_encoded = base64.b64encode(img_encoded).decode('utf-8')
+        return render(request, 'mytools/scketch.html', {'imagem': img_encoded})
+    return render(request, 'mytools/scketch.html')
 
 def download_image(request):
     if request.method == "POST" and 'imagem' in request.POST:

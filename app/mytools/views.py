@@ -59,7 +59,7 @@ def read_qrcode(request):
         qrcdetector = cv2.QRCodeDetector()
         retval, decoded_info, points, straight_qrcode =  qrcdetector.detectAndDecodeMulti(image)
         if points is not None:
-            return render(request, 'mytools/read_qrcode.html', {'qrcode_texts': decoded_info})
+            return render(request, 'mytools/read_qrcode.html', {'image_text': decoded_info[0]})
         
         return render(request, 'mytools/read_qrcode.html', {'error': 'Nenhum QR Code encontrado!'})
 

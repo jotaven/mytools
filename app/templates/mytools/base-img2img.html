@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block body %}
-<div class="bg-gray-100 flex items-center justify-center h-screen">
+<div class="bg-gray-100 flex items-center justify-center h-full md:h-screen">
     <div>
-        <div class="flex space-x-4">
+        <div class="md:flex py-5 space-y-4 md:space-x-4 md:space-y-0 mx-4 pt-8 md:mx-10">
             <form action="" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
                 {% csrf_token %}
                 <label class="text-base text-gray-500 font-semibold mb-2 block">{% block titulo %}{% endblock titulo %}</label>
@@ -16,14 +16,17 @@
             
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <h2 class="text-lg font-bold mb-4">Imagem Processada</h2>
-                <div class="w-96 h-96 border border-gray-300 flex items-center justify-center">
+                <div class="h-48 md:w-64 md:h-96 lg:w-96 lg:h-96 border border-gray-300 flex items-center justify-center">
                     <img id="output" src="{% if imagem %}data:image/png;base64,{{imagem}}{% else %}#{% endif %}" alt="" class="max-w-full max-h-full {% if imagem %}{% else %}hidden{% endif %}"/>
                 </div>
             </div>
         </div>
-        {% if error %}
-        <p class="relative block w-full p-4 my-4 text-base leading-5 text-white bg-red-500 rounded-lg opacity-100 font-regular">{{error}}</p>
-        {% endif %}
+        <div class="">
+            {% if error %}
+            <p class="p-4 my-4 mx-10 text-base leading-5 text-white bg-red-500 rounded-lg opacity-100 font-regular">{{error}}</p>
+            {% endif %}
+            <p class="p-4 my-4 mx-10 text-base leading-5 text-black bg-white rounded-lg opacity-100 font-regular">{% block description %}{% endblock description %}</p>
+        </div>
     </div>
 </div>
 {% endblock body %}

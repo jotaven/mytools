@@ -1,4 +1,6 @@
+from django.http import Http404
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
+from django.core.exceptions import PermissionDenied
 from .forms import ContextForm
 from .models import Context
 
@@ -132,10 +134,9 @@ def context(request):
 def context_detail(request, slug):
     contextObject = get_object_or_404(Context, slug=slug)
     if contextObject.expires_at < timezone.now():
-        if contextObject.is_active:
-            contextObject.is_active = False
-            contextObject.save()
-        return render(request, 'mytools/context_detail.html', {'error': 'Contexto expirado!'})
-    if not contextObject.is_active:
-        return render(request, 'mytools/context_detail.html', {'error': 'Contexto desativado!'})
+        if not contextObject.is_active:
+            raise PermissionDenied
+        contextObject.is_active = False
+        contextObject.save()
+        raise Http404()
     return render(request, 'mytools/context_detail.html', {'context': contextObject})

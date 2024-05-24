@@ -2,3 +2,63 @@
 
 {% block titulo %}Remova o background{% endblock titulo %}
 {% block description %}3fervbgtgrfevb gfrg regf{% endblock description %}
+{% block documentation %}
+<h1 class="text-2xl font-bold mb-4">Visão Geral</h1>
+<ul class="list-disc list-inside mb-4">
+    <li>Carrega a imagem usando a biblioteca PIL (Pillow).</li>
+    <li>Converte a imagem em um array NumPy.</li>
+    <li>Usa a função <code>remove</code> da biblioteca rembg para remover o fundo da imagem.</li>
+</ul>
+<h2 class="text-xl font-semibold mb-3">Como Funciona</h2>
+<h3 class="text-lg font-medium mb-3 mt-6">Passo 1: Carregar a Imagem</h3>
+<p class="mb-4">
+    O primeiro passo é carregar a imagem usando a biblioteca PIL (Python Imaging Library). Isso é feito com a seguinte linha de código:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">image = Image.open(image.file)</code></pre>
+<p class="mb-4">
+    <code>Image.open</code> é uma função da biblioteca PIL que abre e identifica o arquivo de imagem fornecido.
+    <ul class="list-disc list-inside ml-4">
+    <li><code>image.file</code> é o arquivo de imagem de entrada que será aberto.</li>
+    </ul>
+</p>
+<h3 class="text-lg font-medium mb-3 mt-6">Passo 2: Converter a Imagem para um Array NumPy</h3>
+<p class="mb-4">
+    Em seguida, a imagem carregada é convertida em um array NumPy. Isso facilita o processamento da imagem usando a biblioteca rembg. A linha de código para isso é:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">image = np.array(image)</code></pre>
+<p class="mb-4">
+    <code>np.array</code> é uma função do NumPy que converte a imagem PIL em um array NumPy.
+    <ul class="list-disc list-inside ml-4">
+    <li><code>image</code> é a imagem PIL carregada.</li>
+    </ul>
+</p>
+<h3 class="text-lg font-medium mb-3 mt-6">Passo 3: Remover o Fundo da Imagem</h3>
+<p class="mb-4">
+    O passo final é remover o fundo da imagem usando a função <code>remove</code> da biblioteca rembg. A linha de código para isso é:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">output = rembg.remove(image)</code></pre>
+<p class="mb-4">
+    <code>rembg.remove</code> é uma função da biblioteca rembg que remove o fundo da imagem.
+    <ul class="list-disc list-inside ml-4">
+    <li><code>image</code> é a imagem em formato de array NumPy da qual o fundo será removido.</li>
+    <li><code>output</code> é o resultado, ou seja, a imagem com o fundo removido.</li>
+    </ul>
+</p>
+<h3 class="text-lg font-medium mb-3 mt-6">Funcionamento Interno do rembg</h3>
+<p class="mb-4">
+    A biblioteca rembg utiliza técnicas avançadas de segmentação de imagem, geralmente baseadas em modelos de Deep Learning, para identificar e remover o fundo da imagem. 
+</p>
+<p class="mb-4">
+    <strong>Modelo de Segmentação:</strong> rembg usa um modelo pré-treinado de segmentação de imagem. Este modelo foi treinado em um grande conjunto de dados de imagens para aprender a distinguir entre o sujeito principal da imagem (como uma pessoa ou objeto) e o fundo.
+</p>
+<p class="mb-4">
+    <strong>Processamento da Imagem:</strong> Quando a função <code>remove</code> é chamada, a imagem de entrada é passada pelo modelo de segmentação. O modelo analisa a imagem e cria uma máscara binária onde os pixels correspondentes ao fundo são marcados de uma maneira (geralmente 0) e os pixels correspondentes ao sujeito principal são marcados de outra maneira (geralmente 1).
+</p>
+<p class="mb-4">
+    <strong>Aplicação da Máscara:</strong> A máscara binária é então aplicada à imagem original. Os pixels marcados como fundo são removidos (ou tornados transparentes), resultando na imagem final onde o fundo foi removido.
+</p>
+<p class="mb-4">
+    <strong>Retorno do Resultado:</strong> A imagem resultante, com o fundo removido, é retornada e armazenada na variável <code>output</code>.
+</p>
+
+{% endblock documentation %}

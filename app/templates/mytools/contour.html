@@ -2,3 +2,80 @@
 
 {% block titulo %}Contornos{% endblock titulo %}
 {% block description %}Obtenha os contornos de sua imagem{% endblock description %}
+{% block documentation %}
+<h1 class="text-2xl font-bold mb-4">Visão Geral</h1>
+<ul class="list-disc list-inside mb-4">
+    <li>Converte a imagem para tons de cinza.</li>
+    <li>Detecta bordas na imagem em tons de cinza.</li>
+    <li>Encontra contornos com base nas bordas detectadas.</li>
+    <li>Cria uma nova imagem em branco.</li>
+    <li>Desenha os contornos na nova imagem em branco.</li>
+</ul>
+<h2 class="text-xl font-semibold mb-3">Como Funciona</h2>
+<h3 class="text-lg font-medium mb-3 mt-6">Passo 1: Converter a Imagem para Tons de Cinza</h3>
+<p class="mb-4">
+    O primeiro passo é converter a imagem de entrada do seu espaço de cores original (geralmente BGR) para tons de cinza. Isso é feito usando a seguinte linha de código:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</code></pre>
+<p class="mb-4">
+    <code>cv2.cvtColor</code> é uma função do OpenCV que converte uma imagem de um espaço de cores para outro.
+    <ul class="list-disc list-inside ml-4">
+    <li><code>image</code> é a imagem de entrada.</li>
+    <li><code>cv2.COLOR_BGR2GRAY</code> é o código de conversão de espaço de cores que converte a imagem de BGR (Azul, Verde, Vermelho) para tons de cinza.</li>
+    </ul>
+</p>
+<h3 class="text-lg font-medium mb-3 mt-6">Passo 2: Detectar Bordas na Imagem em Tons de Cinza</h3>
+<p class="mb-4">
+    Em seguida, bordas são detectadas na imagem em tons de cinza utilizando o algoritmo Canny. Isso é feito com a seguinte linha de código:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">edged = cv2.Canny(gray, 30, 150)</code></pre>
+<p class="mb-4">
+    <code>cv2.Canny</code> é uma função do OpenCV que detecta bordas em uma imagem.
+    <ul class="list-disc list-inside ml-4">
+    <li><code>gray</code> é a imagem de entrada em tons de cinza.</li>
+    <li><code>30</code> e <code>150</code> são os limiares mínimo e máximo para o detector de bordas Canny.</li>
+    </ul>
+</p>
+<h3 class="text-lg font-medium mb-3 mt-6">Passo 3: Encontrar Contornos</h3>
+<p class="mb-4">
+    Os contornos são então encontrados com base nas bordas detectadas. A linha de código para isso é:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">contours, _ = cv2.findContours(edged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</code></pre>
+<p class="mb-4">
+    <code>cv2.findContours</code> é uma função do OpenCV que encontra contornos em uma imagem binária.
+    <ul class="list-disc list-inside ml-4">
+    <li><code>edged</code> é a imagem binária resultante da detecção de bordas.</li>
+    <li><code>cv2.RETR_EXTERNAL</code> significa que apenas os contornos externos serão recuperados.</li>
+    <li><code>cv2.CHAIN_APPROX_SIMPLE</code> comprime os segmentos horizontais, verticais e diagonais, economizando memória.</li>
+    </ul>
+</p>
+<h3 class="text-lg font-medium mb-3 mt-6">Passo 4: Criar uma Nova Imagem em Branco</h3>
+<p class="mb-4">
+    Uma nova imagem em branco é criada para desenhar os contornos encontrados. Isso é feito com a seguinte linha de código:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">blank_image = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)</code></pre>
+<p class="mb-4">
+    <code>np.zeros</code> é uma função do NumPy que cria uma matriz de zeros.
+    <ul class="list-disc list-inside ml-4">
+    <li><code>(image.shape[0], image.shape[1], 3)</code> define o tamanho da nova imagem em branco com as mesmas dimensões da imagem original e 3 canais de cor (BGR).</li>
+    <li><code>dtype=np.uint8</code> define o tipo de dados dos elementos da matriz como números inteiros de 8 bits sem sinal.</li>
+    </ul>
+</p>
+<h3 class="text-lg font-medium mb-3 mt-6">Passo 5: Desenhar os Contornos na Nova Imagem em Branco</h3>
+<p class="mb-4">
+    Finalmente, os contornos encontrados são desenhados na nova imagem em branco. A linha de código para isso é:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">image = cv2.drawContours(blank_image, contours, -1, (0, 255, 0), 3)</code></pre>
+<p class="mb-4">
+    <code>cv2.drawContours</code> é uma função do OpenCV que desenha contornos em uma imagem.
+    <ul class="list-disc list-inside ml-4">
+    <li><code>blank_image</code> é a imagem em branco onde os contornos serão desenhados.</li>
+    <li><code>contours</code> são os contornos encontrados.</li>
+    <li><code>-1</code> indica que todos os contornos serão desenhados.</li>
+    <li><code>(0, 255, 0)</code> é a cor dos contornos desenhados (verde).</li>
+    <li><code>3</code> é a espessura das linhas dos contornos.</li>
+    </ul>
+</p>
+
+  
+{% endblock documentation %}

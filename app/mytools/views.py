@@ -133,10 +133,8 @@ def context(request):
 
 def context_detail(request, slug):
     contextObject = get_object_or_404(Context, slug=slug)
-    if contextObject.expires_at < timezone.now():
-        if not contextObject.is_active:
-            raise PermissionDenied
+    if contextObject.expires_at < timezone.now() and not request.user.is_superuser:
         contextObject.is_active = False
         contextObject.save()
-        raise Http404()
+        raise PermissionDenied()
     return render(request, 'mytools/context_detail.html', {'context': contextObject})

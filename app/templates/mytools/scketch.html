@@ -2,3 +2,48 @@
 
 {% block titulo %}Rascunho{% endblock titulo %}
 {% block description %}Transforme sua imagem em um rascunho!{% endblock description %}
+{% block documentation %}
+<h1 class="text-2xl font-bold mb-4">Visão Geral</h1>
+<ul class="list-disc list-inside mb-4">
+    <li>Converte a imagem para tons de cinza.</li>
+    <li>Aplica um desfoque gaussiano na imagem em tons de cinza.</li>
+    <li>Cria um efeito de desenho dividindo a imagem em tons de cinza pela imagem desfocada.</li>
+</ul>
+<h2 class="text-xl font-semibold mb-3">Como Funciona</h2>
+<h3 class="text-lg font-medium mb-3 mt-6">Passo 1: Converter a Imagem para Tons de Cinza</h3>
+<p class="mb-4">
+O primeiro passo é converter a imagem de entrada do seu espaço de cores original (geralmente BGR) para tons de cinza. Isso é feito usando a seguinte linha de código:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</code></pre>
+<p class="mb-4">
+<code>cv2.cvtColor</code> é uma função do OpenCV que converte uma imagem de um espaço de cores para outro.
+<ul class="list-disc list-inside ml-4">
+    <li><code>image</code> é a imagem de entrada.</li>
+    <li><code>cv2.COLOR_BGR2GRAY</code> é o código de conversão de espaço de cores que converte a imagem de BGR (Azul, Verde, Vermelho) para tons de cinza.</li>
+</ul>
+</p>
+<h3 class="text-lg font-medium mb-3 mt-6">Passo 2: Aplicar Desfoque Gaussiano</h3>
+<p class="mb-4">Em seguida, um desfoque gaussiano é aplicado à imagem em tons de cinza para suavizá-la. Isso ajuda a criar o efeito de desenho reduzindo ruídos e detalhes na imagem. O código para este passo é:</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">gray_blur = cv2.GaussianBlur(gray, (21, 21), 0)</code></pre>
+<p class="mb-4">
+<code>cv2.GaussianBlur</code> é uma função do OpenCV que aplica um desfoque gaussiano na imagem.
+<ul class="list-disc list-inside ml-4">
+    <li><code>gray</code> é a imagem de entrada em tons de cinza.</li>
+    <li><code>(21, 21)</code> especifica o tamanho do kernel usado para desfocar. Um tamanho de kernel maior resulta em um desfoque mais significativo.</li>
+    <li><code>0</code> é o desvio padrão na direção X. Se definido como 0, ele é calculado com base no tamanho do kernel.</li>
+</ul>
+</p>
+<h3 class="text-lg font-medium mb-3 mt-6">Passo 3: Criar o Efeito de Desenho</h3>
+<p class="mb-4">
+Finalmente, o efeito de desenho é criado dividindo a imagem original em tons de cinza pela imagem desfocada. Isso destaca as bordas e cria uma aparência de desenho a lápis. A linha de código relevante é:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">image = cv2.divide(gray, gray_blur, scale=256)</code></pre>
+<p class="mb-4">
+<code>cv2.divide</code> é uma função do OpenCV que divide uma imagem por outra.
+<ul class="list-disc list-inside ml-4">
+    <li><code>gray</code> é a imagem original em tons de cinza.</li>
+    <li><code>gray_blur</code> é a imagem em tons de cinza desfocada.</li>
+    <li><code>scale=256</code> é um fator de escala aplicado ao resultado da divisão para garantir que os valores dos pixels de saída permaneçam dentro da faixa válida (0 a 255).</li>
+</ul>
+</p>
+{% endblock documentation %}

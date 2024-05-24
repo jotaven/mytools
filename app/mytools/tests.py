@@ -33,7 +33,7 @@ class ContextDetailViewTests(TestCase):
     def test_context_detail_expired_context(self):
         url = reverse('context_detail', kwargs={'slug': self.expired_context.slug})
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 403)
         self.expired_context.refresh_from_db()
         self.assertFalse(self.expired_context.is_active)
 

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+<div class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="text-center">
+        <label for="text" class="block mb-2 text-sm font-medium text-gray-900">Contexto</label>
+        <form action="" method="POST" class="flex flex-col justify-center items-center w-[80vw] md:w-[50vw]">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white text-base px-5 py-3 mt-5 outline-none rounded w-max cursor-pointer mx-auto font-[sans-serif]">Enviar</button>
+        </form>
+    </div>
+</div>
+{% endblock body %}

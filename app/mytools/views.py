@@ -1,4 +1,9 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
+from .forms import ContextForm
+from .models import Context
+
+from django.utils import timezone
+
 import base64
 import requests
 import pytesseract
@@ -111,3 +116,26 @@ def download_image(request):
         response['Content-Disposition'] = 'attachment; filename="qrcode.png"'
         return response
 
+def context(request):
+    if request.method == 'POST':
+        form = ContextForm(request.POST)
+        if form.is_valid():
+            text = form.cleaned_data['text']
+            expires_at = form.cleaned_data['expires_at']
+            newContext = Context.objects.create(text=text, expires_at=expires_at)
+            return redirect('context_detail', slug=newContext.slug)
+        return render(request, 'mytools/context.html', {'form': form})
+    form = ContextForm()
+    return render(request, 'mytools/context.html', {'form': form})
+
+
+def context_detail(request, slug):
+    contextObject = get_object_or_404(Context, slug=slug)
+    if contextObject.expires_at < timezone.now():
+        if contextObject.is_active:
+            contextObject.is_active = False
+            contextObject.save()
+        return render(request, 'mytools/context_detail.html', {'error': 'Contexto expirado!'})
+    if not contextObject.is_active:
+        return render(request, 'mytools/context_detail.html', {'error': 'Contexto desativado!'})
+    return render(request, 'mytools/context_detail.html', {'context': contextObject})

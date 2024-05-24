@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+<div class="flex items-center justify-center h-screen">
+    <div class="flex flex-col justify-center items-center w-[80vw] md:w-[50vw]">
+        <label for="message" class="block mb-2 text-sm font-medium text-gray-900">Contexto</label>
+        <textarea id="message" rows="25" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-y" disabled>{{ context.text }}</textarea>
+        <div class="flex justify-between w-full">
+            <span>O link expira {{context.expires_at}}</span>
+            <span>{{ request.get_host }}{{ request.path }}</span>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+{% block scripts %}
+
+
+{% endblock scripts %}

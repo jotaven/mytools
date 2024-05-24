@@ -10,4 +10,6 @@ urlpatterns = [
     path('removebg/', views.image_removebg, name='removebg'),
     path('contour/', views.image_contour, name='contour'),
     path('scketch/', views.image_scketch, name='scketch'),
+    path('context/', views.context, name='context'),
+    path('context/<slug:slug>', views.context_detail, name='context_detail'),
 ]

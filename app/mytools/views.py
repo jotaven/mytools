@@ -1,10 +1,9 @@
 from django.http import Http404
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.core.exceptions import PermissionDenied
+from django.utils import timezone
 from .forms import ContextForm
 from .models import Context
-
-from django.utils import timezone
 
 import base64
 import requests

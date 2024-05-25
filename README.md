@@ -9,6 +9,10 @@
 
 This repository is a collection of tools and scripts.
 
+<!-- image tag on docs/images/ec2 -->
+<img src="docs/images/ci.png" alt="aws ec2"/>
+<img src="docs/images/ec2.png" alt="aws ec2"/>
+
 Tem um monte de Funcionabilidades para você utilizar!
 
 You can access on [tools.jotinha.me](tools.jotinha.me) or [mytools.jotinha.me](mytools.jotinha.me)

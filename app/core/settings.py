@@ -83,13 +83,15 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+POSTGRES_HOST = 'db'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'mytools',
         'USER': 'mytools',
         'PASSWORD': 'mytools',
-        'HOST': 'db',
+        'HOST': POSTGRES_HOST,
         'PORT': '5432',
     }
 }

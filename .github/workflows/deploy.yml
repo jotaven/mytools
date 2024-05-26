@@ -32,7 +32,7 @@ jobs:
         REMOTE_USER: "ec2-user"
         TARGET: "/home/ec2-user/mytools"
         EXCLUDE: "/dist/, /node_modules/, **.env, rebuild_app.sh, watcher.sh"
-    
+
     - name: Restart Docker-compose
       uses: appleboy/ssh-action@master
       with:

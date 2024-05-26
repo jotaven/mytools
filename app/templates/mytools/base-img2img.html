@@ -17,8 +17,9 @@
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <h2 class="text-lg font-bold mb-4">Imagem Processada</h2>
                 <div class="h-48 md:w-64 md:h-96 lg:w-96 lg:h-96 border border-gray-300 flex items-center justify-center">
-                    <form action=""></form>
-                    <img id="output" src="{% if imagem %}data:image/png;base64,{{imagem}}{% else %}#{% endif %}" alt="" class="max-w-full max-h-full {% if imagem %}{% else %}hidden{% endif %}"/>
+                    <a href="{% if imagem %}data:image/png;base64,{{imagem}}{% else %}#{% endif %}" download="processed_image.png">
+                        <img id="output" src="{% if imagem %}data:image/png;base64,{{imagem}}{% else %}#{% endif %}" alt="" class="max-w-full max-h-full {% if imagem %}{% else %}hidden{% endif %}"/>
+                    </a>
                 </div>
             </div>
         </div>

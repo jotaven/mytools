@@ -2,3 +2,54 @@
 
 {% block titulo %}OCR de Imagens{% endblock titulo %}
 {% block description %}Extraia o texto da sua imagem a partir do Tesseract OCR{% endblock description %}
+{% block documentation %}
+<h1 class="text-2xl font-bold mb-4">Explicação do Código</h1>
+<ul class="list-disc list-inside mb-4">
+    <li>Converte a imagem para tons de cinza.</li>
+    <li>Extrai os dados da imagem com Tesseract</li>
+    <li>Filtra os Resultados de Texto</li>
+</ul>
+<h2 class="text-2xl font-semibold mb-3">Como Funciona</h2>
+<h2 class="text-xl font-semibold mb-3 mt-3">Passo 1: Converter a Imagem para Escala de Cinza</h2>
+<p class="mb-4">
+    A primeira etapa é converter a imagem de entrada para escala de cinza. Isso é feito usando a seguinte linha de código:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">cv2.cvtColor(np.array(image), cv2.COLOR_RGB2GRAY)</code></pre>
+<p class="mb-4">
+    <code>cv2.cvtColor</code> é uma função do OpenCV que converte uma imagem de um espaço de cores para outro.
+    <ul class="list-disc list-inside ml-4">
+    <li><code>np.array(image)</code> converte a imagem PIL para um array NumPy.</li>
+    <li><code>cv2.COLOR_RGB2GRAY</code> é o código de conversão que converte a imagem de RGB para tons de cinza.</li>
+    </ul>
+</p>
+
+<h2 class="text-xl font-semibold mb-3 mt-3">Passo 2: Extrair Dados da Imagem com Tesseract</h2>
+<p class="mb-4">
+    Em seguida, os dados de texto são extraídos da imagem usando o Tesseract OCR. A linha de código para isso é:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">pytesseract.image_to_data(image, lang="por", config=f"--tessdata-dir '{TESSDATA_DIR}'", output_type=pytesseract.Output.DICT)</code></pre>
+<p class="mb-4">
+    <code>pytesseract.image_to_data</code> é uma função do Tesseract OCR que extrai dados de texto da imagem.
+    <ul class="list-disc list-inside ml-4">
+    <li><code>image</code> é a imagem em escala de cinza de entrada.</li>
+    <li><code>lang="por"</code> especifica o uso do idioma português para a extração de texto.</li>
+    <li><code>config=f"--tessdata-dir '{TESSDATA_DIR}'"</code> define o diretório de dados do Tesseract.</li>
+    <li><code>output_type=pytesseract.Output.DICT</code> especifica que a saída deve ser um dicionário.</li>
+    </ul>
+</p>
+
+<h2 class="text-xl font-semibold mb-3 mt-3">Passo 3: Filtrar Resultados de Texto</h2>
+<p class="mb-4">
+    Finalmente, os resultados de texto são filtrados para incluir apenas aqueles com uma confiança acima de 45. Isso é feito com a seguinte linha de código:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">[resultado['text'][i] for i in range(len(resultado['text'])) if resultado['text'][i] != '' and resultado['conf'][i] > 45]</code></pre>
+<p class="mb-4">
+    Esta linha de código filtra os resultados extraídos pelo Tesseract.
+    <ul class="list-disc list-inside ml-4">
+    <li><code>resultado['text']</code> contém os textos extraídos.</li>
+    <li><code>range(len(resultado['text']))</code> itera sobre todos os textos extraídos.</li>
+    <li><code>resultado['text'][i] != ''</code> garante que o texto não seja vazio.</li>
+    <li><code>resultado['conf'][i] > 45</code> garante que a confiança do texto extraído seja maior que 45.</li>
+    </ul>
+</p>
+{% endblock documentation %}

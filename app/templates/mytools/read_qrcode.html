@@ -2,3 +2,67 @@
 
 {% block titulo %}Leitura de QRCode{% endblock titulo %}
 {% block description %}Selecione a foto do qrcode que você quer decodificar em baixo!{% endblock description %}
+{% block documentation %}
+
+<h1 class="text-2xl font-bold mb-4">Explicação do Código</h1>
+
+<h2 class="text-xl font-semibold mb-3 mt-3">Passo 1: Converter a Imagem para Escala de Cinza</h2>
+<p class="mb-4">
+    A primeira etapa é converter a imagem de entrada para escala de cinza. Isso é feito usando a seguinte linha de código:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</code></pre>
+<p class="mb-4">
+    <code>cv2.cvtColor</code> é uma função do OpenCV que converte uma imagem de um espaço de cores para outro.
+    <ul class="list-disc list-inside ml-4">
+    <li><code>image</code> é a imagem de entrada.</li>
+    <li><code>cv2.COLOR_BGR2GRAY</code> é o código de conversão que converte a imagem de BGR (Azul, Verde, Vermelho) para tons de cinza.</li>
+    </ul>
+</p>
+
+<h2 class="text-xl font-semibold mb-3 mt-3">Passo 2: Aplicar um Filtro de Suavização</h2>
+<p class="mb-4">
+    Em seguida, um filtro de suavização (desfoque gaussiano) é aplicado para reduzir o ruído na imagem. A linha de código para isso é:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">blurred = cv2.GaussianBlur(gray, (5, 5), 0)</code></pre>
+<p class="mb-4">
+    <code>cv2.GaussianBlur</code> é uma função do OpenCV que aplica um desfoque gaussiano à imagem.
+    <ul class="list-disc list-inside ml-4">
+    <li><code>gray</code> é a imagem em escala de cinza de entrada.</li>
+    <li><code>(5, 5)</code> especifica o tamanho do kernel usado para desfocar.</li>
+    <li><code>0</code> é o desvio padrão na direção X. Se definido como 0, ele é calculado com base no tamanho do kernel.</li>
+    </ul>
+</p>
+
+<h2 class="text-xl font-semibold mb-3 mt-3">Passo 3: Equalização do Histograma</h2>
+<p class="mb-4">
+    A equalização do histograma é aplicada para melhorar o contraste da imagem. Isso é feito com a seguinte linha de código:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">equalized = cv2.equalizeHist(blurred)</code></pre>
+<p class="mb-4">
+    <code>cv2.equalizeHist</code> é uma função do OpenCV que aplica a equalização do histograma a uma imagem.
+    <ul class="list-disc list-inside ml-4">
+    <li><code>blurred</code> é a imagem suavizada de entrada.</li>
+    </ul>
+</p>
+
+<h2 class="text-xl font-semibold mb-3 mt-3">Passo 4: Detecção de QR Code</h2>
+<p class="mb-4">
+    Finalmente, a detecção de QR Code é realizada. O código para isso é:
+</p>
+<pre class="bg-gray-200 p-4 rounded mb-4">
+    <code class="language-python">qrcdetector = cv2.QRCodeDetector()</code>
+    <code class="language-python">retval, decoded_info, points, straight_qrcode = qrcdetector.detectAndDecodeMulti(equalized)</code>
+</pre>
+<p class="mb-4">
+    <code>cv2.QRCodeDetector</code> é uma classe do OpenCV que fornece métodos para detecção e decodificação de QR Codes.
+    <ul class="list-disc list-inside ml-4">
+        <li><code>qrcdetector</code> é uma instância da classe <code>QRCodeDetector</code>.</li>
+        <li><code>retval</code> indica se a detecção foi bem-sucedida.</li>
+        <li><code>decoded_info</code> contém as informações decodificadas dos QR Codes detectados.</li>
+        <li><code>points</code> contém os pontos de contorno dos QR Codes detectados.</li>
+        <li><code>straight_qrcode</code> contém as imagens retificadas dos QR Codes detectados.</li>
+        <li><code>equalized</code> é a imagem de entrada equalizada.</li>
+    </ul>
+</p>
+
+{% endblock documentation %}

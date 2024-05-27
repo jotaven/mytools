@@ -28,16 +28,12 @@ DEBUG = False
 
 
 if not DEBUG:
-    ALLOWED_HOSTS = ['tools.jotinha.me', 'mytools.jotinha.me']
+    ALLOWED_HOSTS = ['tools.jotinha.me', 'mytools.jotinha.me', '127.0.0.1', 'localhost']
+    CSRF_TRUSTED_ORIGINS = ['https://tools.jotinha.me', 'https://mytools.jotinha.me']
 else:
     ALLOWED_HOSTS = ['*']
+    CSRF_TRUSTED_ORIGINS = ['https://*.jotinha.me','https://*.127.0.0.1', 'https://localhost']
 
-ALLOWED_HOSTS = ['*']
-
-CSRF_TRUSTED_ORIGINS = ['https://*.jotinha.me','https://*.127.0.0.1', 'https://localhost']
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -47,9 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mytools',
+    'django_prometheus',
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -57,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',   
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -87,7 +86,7 @@ POSTGRES_HOST = 'db'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django_prometheus.db.backends.postgresql',
         'NAME': 'mytools',
         'USER': 'mytools',
         'PASSWORD': 'mytools',

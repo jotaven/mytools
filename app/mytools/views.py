@@ -60,10 +60,10 @@ def image_read_qrcode(request):
         if extension not in ['jpg', 'jpeg', 'png']:
             return render(request, 'mytools/read_qrcode.html', {'error': f'Formato {extension} não suportado!'})
         
+        image = cv2.imdecode(np.fromstring(request.FILES['file_upload'].read(), np.uint8), cv2.IMREAD_COLOR)
         qrcdetector = cv2.QRCodeDetector()
         retval, decoded_info, points, straight_qrcode =  qrcdetector.detectAndDecodeMulti(image)
         if not retval:
-            image = cv2.imdecode(np.fromstring(request.FILES['file_upload'].read(), np.uint8), cv2.IMREAD_COLOR)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             image = cv2.GaussianBlur(image, (5, 5), 0)
             image = cv2.equalizeHist(image)

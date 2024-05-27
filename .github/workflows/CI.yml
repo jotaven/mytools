@@ -1,0 +1,36 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Docker
+      run: |
+        docker-compose --version
+        docker --version
+
+    - name: Build and start services
+      run: |
+        docker-compose up -d
+
+    - name: Wait for services to be ready
+      run: |
+        # You may need to adjust this sleep time based on your services
+        sleep 10
+        docker-compose ps
+
+    - name: Run tests
+      run: |
+        docker-compose exec -T web python manage.py test

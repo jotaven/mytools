@@ -27,7 +27,7 @@
 <p class="mb-4">
     Em seguida, os dados de texto são extraídos da imagem usando o Tesseract OCR. A linha de código para isso é:
 </p>
-<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">pytesseract.image_to_data(image, lang="por", config=f"--tessdata-dir '{TESSDATA_DIR}'", output_type=pytesseract.Output.DICT)</code></pre>
+<pre class="bg-gray-200 text-xs p-4 rounded mb-4"><code class="language-python">pytesseract.image_to_data(image, lang="por", config=f"--tessdata-dir '{TESSDATA_DIR}'", output_type=pytesseract.Output.DICT)</code></pre>
 <p class="mb-4">
     <code>pytesseract.image_to_data</code> é uma função do Tesseract OCR que extrai dados de texto da imagem.
     <ul class="list-disc list-inside ml-4">
@@ -42,7 +42,7 @@
 <p class="mb-4">
     Finalmente, os resultados de texto são filtrados para incluir apenas aqueles com uma confiança acima de 45. Isso é feito com a seguinte linha de código:
 </p>
-<pre class="bg-gray-200 p-4 rounded mb-4"><code class="language-python">[resultado['text'][i] for i in range(len(resultado['text'])) if resultado['text'][i] != '' and resultado['conf'][i] > 45]</code></pre>
+<pre class="bg-gray-200 text-xs p-4 rounded mb-4"><code class="language-python">[resultado['text'][i] for i in range(len(resultado['text'])) if resultado['text'][i] != '' and resultado['conf'][i] > 45]</code></pre>
 <p class="mb-4">
     Esta linha de código filtra os resultados extraídos pelo Tesseract.
     <ul class="list-disc list-inside ml-4">

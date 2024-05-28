@@ -23,7 +23,7 @@ app = FastAPI(
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-@app.get("/qrcode")
+@app.get("/api/qrcode")
 @limiter.limit("120/minute")
 async def generate_qr_code(request: Request, url: str):
     url=url.strip()
@@ -39,7 +39,7 @@ async def generate_qr_code(request: Request, url: str):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-@app.post("/removebg")
+@app.post("/api/removebg")
 @limiter.limit("40/minute")
 async def remove_background(request: Request, image: UploadFile):
     try:

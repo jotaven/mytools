@@ -28,7 +28,7 @@ def generate_qrcode(request):
         if 'text' not in request.POST:
             return render(request, 'mytools/qrcode.html', {'error': 'URL não providenciada!'})
         text = request.POST.get('text')
-        response = requests.get(f'{API_URL}/qrcode', params={'url': text})
+        response = requests.get(f'{API_URL}/api/qrcode', params={'url': text})
         if response.status_code == 200:
             imagem = base64.b64encode(response.content).decode('utf-8')
             return render(request, 'mytools/qrcode.html', {'imagem': imagem, 'text': text})
@@ -81,7 +81,7 @@ def image_read_qrcode(request):
 def image_removebg(request):
     if request.method == "POST" and request.FILES['file_upload']:
         image = request.FILES['file_upload']
-        response = requests.post(f'{API_URL}/removebg', files={'image': image})
+        response = requests.post(f'{API_URL}/api/removebg', files={'image': image})
         if response.status_code == 200:
             imagem = base64.b64encode(response.content).decode('utf-8')
             return render(request, 'mytools/removebg.html', {'imagem': imagem})
